@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel</title>
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css"
+    />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        height: 100%;
+        width: 250px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #343a40;
+        padding-top: 20px;
+      }
+
+      .sidebar a {
+        padding: 10px 15px;
+        text-align: left;
+        text-decoration: none;
+        font-size: 16px;
+        color: white;
+        display: block;
+      }
+
+      .sidebar a:hover {
+        background-color: #575d63;
+      }
+
+      .sidebar .active {
+        background-color: #575d63;
+      }
+
+      /* Main content */
+      .main-content {
+        margin-left: 250px;
+        padding: 20px;
+      }
+
+      .navbar {
+        margin-left: 250px;
+      }
+
+      /* Footer */
+      footer {
+        position: fixed;
+        bottom: 0;
+        width: calc(100% - 250px);
+        margin-left: 250px;
+        background-color: #343a40;
+        color: white;
+        text-align: center;
+        padding: 10px;
+      }
+
+      .breadcrumb {
+        background-color: #f8f9fa;
+      }
+
+      .sidebar h4 {
+        padding-bottom: 25px;
+      }
+
+      .pull-right {
+        float: right;
+      }
+
+      .btn-xs {
+        padding: 1px 5px;
+        font-size: 12px;
+        line-height: 1.5;
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h4 class="text-white text-center">Shree Aluminium</h4>
+      <a href="#dashboard" id="dashboardLink" class="active">Dashboard</a>
+      <a href="#users" id="usersLink">Users</a>
+      <a href="#settings" id="settingsLink">Master Data</a>
+      <a href="#reports" id="reportsLink">Reports</a>
+      <a href="/AluminiumWorks/login.html">Logout</a>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Admin Dashboard</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Settings</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <!-- <nav aria-label="breadcrumb" class="main-content">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li
+          class="breadcrumb-item active"
+          aria-current="page"
+          id="currentBreadcrumb"
+        >
+          Dashboard
+        </li>
+      </ol>
+    </nav> -->
+
+    <!-- Main content -->
+    <div class="main-content">
+      <div id="dashboard">
+        <h3>Dashboard Overview</h3>
+        <p>This is the dashboard overview with statistics and summaries.</p>
+        <div class="container">
+          <div class="card-deck">
+            <div class="card bg-primary">
+              <div class="card-body text-center">
+                <p class="card-text">Projects</p>
+                <h2>59</h2>
+              </div>
+            </div>
+            <div class="card bg-warning">
+              <div class="card-body text-center">
+                <p class="card-text">Vendors</p>
+                <h2>25</h2>
+              </div>
+            </div>
+            <div class="card bg-success">
+              <div class="card-body text-center">
+                <p class="card-text">Products</p>
+                <h2>1250</h2>
+              </div>
+            </div>
+            <div class="card bg-danger">
+              <div class="card-body text-center">
+                <p class="card-text">Users</p>
+                <h2>150</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="users" style="display: none">
+        <div class="row">
+          <div class="col-md-6">
+            <h3>User Management</h3>
+          </div>
+          <div class="col-md-6">
+            <button class="btn btn-sm btn-success pull-right">Add User</button>
+          </div>
+        </div>
+
+        <table
+          id="table_id"
+          class="table table-condensed table-striped table-hover"
+        >
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Description</th>
+              <th>Product</th>
+              <th>Vendor</th>
+              <th>Start Date</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Trial Desc...</td>
+              <td>First Title</td>
+              <td>Akshay kumar</td>
+              <td>16-Oct-2024</td>
+              <td>Purchase Order Created</td>
+              <td>
+                <button class="btn btn-xs btn-primary">View</button>
+                <button
+                  data-toggle="modal"
+                  data-target="#myModal"
+                  class="btn btn-xs btn-danger"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Second Desc...</td>
+              <td>Second Title</td>
+              <td>Deepika Padukone</td>
+              <td>17-Oct-2024</td>
+              <td>Pending Approval</td>
+              <td>
+                <button class="btn btn-xs btn-primary">View</button>
+                <button
+                  data-toggle="modal"
+                  data-target="#myModal"
+                  class="btn btn-xs btn-danger"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Third Desc...</td>
+              <td>Third Title</td>
+              <td>Shah Rukh Khan</td>
+              <td>18-Oct-2024</td>
+              <td>Order Confirmed</td>
+              <td>
+                <button class="btn btn-xs btn-primary">View</button>
+                <button
+                  data-toggle="modal"
+                  data-target="#myModal"
+                  class="btn btn-xs btn-danger"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Fourth Desc...</td>
+              <td>Fourth Title</td>
+              <td>Katrina Kaif</td>
+              <td>19-Oct-2024</td>
+              <td>In Progress</td>
+              <td>
+                <button class="btn btn-xs btn-primary">View</button>
+                <button
+                  data-toggle="modal"
+                  data-target="#myModal"
+                  class="btn btn-xs btn-danger"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Fifth Desc...</td>
+              <td>Fifth Title</td>
+              <td>Aamir Khan</td>
+              <td>20-Oct-2024</td>
+              <td>Completed</td>
+              <td>
+                <button class="btn btn-xs btn-primary">View</button>
+                <button
+                  data-toggle="modal"
+                  data-target="#myModal"
+                  class="btn btn-xs btn-danger"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>Sixth Desc...</td>
+              <td>Sixth Title</td>
+              <td>Ranbir Kapoor</td>
+              <td>21-Oct-2024</td>
+              <td>Shipped</td>
+              <td>
+                <button class="btn btn-xs btn-primary">View</button>
+                <button
+                  data-toggle="modal"
+                  data-target="#myModal"
+                  class="btn btn-xs btn-danger"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>Seventh Desc...</td>
+              <td>Seventh Title</td>
+              <td>Priyanka Chopra</td>
+              <td>22-Oct-2024</td>
+              <td>Returned</td>
+              <td>
+                <button class="btn btn-xs btn-primary">View</button>
+                <button
+                  data-toggle="modal"
+                  data-target="#myModal"
+                  class="btn btn-xs btn-danger"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td>Eighth Desc...</td>
+              <td>Eighth Title</td>
+              <td>Hrithik Roshan</td>
+              <td>23-Oct-2024</td>
+              <td>Refunded</td>
+              <td>
+                <button class="btn btn-xs btn-primary">View</button>
+                <button
+                  data-toggle="modal"
+                  data-target="#myModal"
+                  class="btn btn-xs btn-danger"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>9</td>
+              <td>Ninth Desc...</td>
+              <td>Ninth Title</td>
+              <td>Alia Bhatt</td>
+              <td>24-Oct-2024</td>
+              <td>Closed</td>
+              <td>
+                <button class="btn btn-xs btn-primary">View</button>
+                <button
+                  data-toggle="modal"
+                  data-target="#myModal"
+                  class="btn btn-xs btn-danger"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td>Tenth Desc...</td>
+              <td>Tenth Title</td>
+              <td>Varun Dhawan</td>
+              <td>25-Oct-2024</td>
+              <td>Cancelled</td>
+              <td>
+                <button class="btn btn-xs btn-primary">View</button>
+                <button
+                  data-toggle="modal"
+                  data-target="#myModal"
+                  class="btn btn-xs btn-danger"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>11</td>
+              <td>Eleventh Desc...</td>
+              <td>Eleventh Title</td>
+              <td>Sonam Kapoor</td>
+              <td>26-Oct-2024</td>
+              <td>On Hold</td>
+              <td>
+                <button class="btn btn-xs btn-primary">View</button>
+                <button
+                  data-toggle="modal"
+                  data-target="#myModal"
+                  class="btn btn-xs btn-danger"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="settings" style="display: none">
+        <h4>Create new product</h4>
+        <br />
+        <div class="container">
+          <form action="/action_page.php">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <div class="col-md-3">
+                    <label for="name">Name:</label>
+                  </div>
+                  <div class="col-md-9">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="pname"
+                      placeholder="Enter Product Name"
+                      name="pname"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-md-3">
+                    <label for="name">Label:</label>
+                  </div>
+                  <div class="col-md-9">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="plabel"
+                      placeholder="Enter Product Label"
+                      name="plabel"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-md-3">
+                    <label for="name">Family:</label>
+                  </div>
+                  <div class="col-md-9">
+                    <select class="form-control" id="sel1">
+                      <option>--Select product family--</option>
+                      <option>Aluminium</option>
+                      <option>Glass</option>
+                      <option>Stailness steel</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-md-3">
+                    <label for="name">Product image:</label>
+                  </div>
+                  <div class="col-md-9">
+                    <input
+                      type="file"
+                      id="myfile"
+                      name="myfile"
+                      onchange="readURL(this);"
+                    />
+                    <img id="selectedImg" src="#" alt="product image" />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-md-3">
+                    <label for="name">Notifications:</label>
+                  </div>
+                  <div class="col-md-9">
+                    <input type="checkbox" name="remember" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-danger">Cancel</button>
+          </form>
+        </div>
+      </div>
+      <div id="reports" style="display: none">
+        <h3>Reports</h3>
+        <p>View or generate reports from here.</p>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <canvas
+                id="barChart"
+                style="width: 100%; max-width: 600px"
+              ></canvas>
+            </div>
+            <div class="col-md-6">
+              <canvas
+                id="barChart2"
+                style="width: 100%; max-width: 600px"
+              ></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Delete</h4>
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure ?</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger btn-sm"
+              data-dismiss="modal"
+            >
+              Delete
+            </button>
+            <button
+              type="button"
+              class="btn btn-default btn-sm"
+              data-dismiss="modal"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <footer>
+      <p>
+        Shree Aluminium. All Rights Reserved <a href="#">Aim Infotech</a> 2024
+      </p>
+    </footer>
+
+    <!-- jQuery Script to Handle Sidebar Links and Breadcrumb -->
+    <script>
+      $(document).ready(function () {
+        // Function to change the content and breadcrumb
+        function updateContent(contentId, breadcrumbText) {
+          $("#dashboard, #users, #settings, #reports").hide();
+          $(contentId).show();
+          $("#currentBreadcrumb").text(breadcrumbText);
+        }
+
+        // Dashboard
+        $("#dashboardLink").click(function () {
+          updateContent("#dashboard", "Dashboard");
+        });
+
+        // Users
+        $("#usersLink").click(function () {
+          updateContent("#users", "Users");
+        });
+
+        // Settings
+        $("#settingsLink").click(function () {
+          updateContent("#settings", "Settings");
+        });
+
+        // Reports
+        $("#reportsLink").click(function () {
+          updateContent("#reports", "Reports");
+        });
+      });
+    </script>
+  </body>
+</html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $("#table_id").dataTable();
+
+    $(".sidebar a").on("click", function () {
+      $(".sidebar a").removeClass();
+      $(this).addClass("active");
+    });
+  });
+
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        $("#selectedImg").attr("src", e.target.result).width(150).height(200);
+      };
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  var xValues = [
+    "Karnataka",
+    "Maharashtra",
+    "Gujrat",
+    "Telangana",
+    "Madhya Pradesh",
+  ];
+  var yValues = [55, 49, 62, 25, 33];
+  var barColors = ["#b91d47", "#00aba9", "#2b5797", "#e8c3b9", "#1e7145"];
+
+  new Chart("barChart", {
+    type: "bar",
+    data: {
+      labels: xValues,
+      datasets: [
+        {
+          backgroundColor: barColors,
+          data: yValues,
+        },
+      ],
+    },
+    options: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: "Branch Projects - 2024",
+      },
+    },
+  });
+</script>
+
+<script>
+  var xValues = [
+    "Karnataka",
+    "Maharashtra",
+    "Gujrat",
+    "Telangana",
+    "Madhya Pradesh",
+  ];
+  var yValues = [55, 49, 44, 24, 15];
+  var barColors = ["#b91d47", "#00aba9", "#2b5797", "#e8c3b9", "#1e7145"];
+
+  new Chart("barChart2", {
+    type: "bar",
+    data: {
+      labels: xValues,
+      datasets: [
+        {
+          backgroundColor: barColors,
+          data: yValues,
+        },
+      ],
+    },
+    options: {
+      title: {
+        display: true,
+        text: "Product orders",
+      },
+    },
+  });
+</script>
